@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PaymentserviceApplication {
 
 	public static void main(String[] args) {
+		DatabaseInitializer.initialize("paymentxamprep_db");
 		SpringApplication.run(PaymentserviceApplication.class, args);
 	}
 
