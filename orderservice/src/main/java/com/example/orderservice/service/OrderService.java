@@ -2,6 +2,7 @@ package com.example.orderservice.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -39,6 +40,20 @@ public class OrderService {
         .build();
         orderRepository.save(order);
     log.info("Order {} payment status updated", order.getId());
+    }
+
+    @KafkaListener(topics = "deliveryTopic", groupId = "orderDeliveryGroup")
+    public void updateDeliveryInfo(OrderDto orderDto) {
+        log.info("Received delivery update: {}", orderDto);
+        
+        Optional<Order> optionalOrder = orderRepository.findById(orderDto.getId());
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            order.setDeliveryStatus(orderDto.getDeliveryStatus());
+            orderRepository.save(order);
+            log.info("Updated delivery status for order {} to {}", 
+                    order.getId(), order.getDeliveryStatus());
+        }
     }
 
     public   List<OrderDto> getAllOrders(){

@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DeliveryserviceApplication {
 
 	public static void main(String[] args) {
+		DatabaseInitializer.initialize("deliveryxamprep_db");
 		SpringApplication.run(DeliveryserviceApplication.class, args);
 	}
 
